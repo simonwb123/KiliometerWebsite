@@ -21,53 +21,258 @@
   header {
     background: #12161f;
     border-bottom: 1px solid #2a3148;
-    padding: 14px 24px;
+    padding: 12px 24px;
     display: flex;
     align-items: center;
     gap: 12px;
-  }
-
-  header .logo {
-    width: 32px; height: 32px;
-    background: #e8542a;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 14px; color: white;
     flex-shrink: 0;
   }
 
-  header h1 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #e8eaf0;
-    letter-spacing: 0.01em;
+  header .logo {
+    width: 30px; height: 30px;
+    background: #e8542a;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; color: white;
+    flex-shrink: 0;
   }
 
-  header span {
-    font-size: 13px;
-    color: #6b7494;
-    margin-left: 4px;
-  }
+  header h1 { font-size: 15px; font-weight: 600; color: #e8eaf0; }
+  header span { font-size: 12px; color: #6b7494; margin-left: 4px; }
 
   .layout {
     display: flex;
     flex: 1;
     min-height: 0;
-    height: calc(100vh - 57px);
+    height: calc(100vh - 55px);
   }
 
+  /* ── MAP COLUMN ── */
+  .map-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+  }
+
+  /* Radius bar ABOVE map */
+  .radius-bar {
+    background: #12161f;
+    border-bottom: 1px solid #2a3148;
+    padding: 9px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  .radius-bar .r-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7494;
+    white-space: nowrap;
+  }
+
+  .radius-presets {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .preset-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+    border: 1px solid #2a3148;
+    border-radius: 20px;
+    background: #1a1f2e;
+    color: #9ba3c0;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .preset-btn:hover { border-color: #e8542a; color: #e8eaf0; }
+
+  .preset-btn.active {
+    background: #e8542a;
+    border-color: #e8542a;
+    color: white;
+    font-weight: 600;
+  }
+
+  .slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .slider-wrap .sl-end {
+    font-size: 10px;
+    color: #4a5270;
+    white-space: nowrap;
+  }
+
+  input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: #2a3148;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #e8542a;
+    cursor: pointer;
+    border: 2px solid #12161f;
+    box-shadow: 0 0 0 1px #e8542a;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #e8542a;
+    cursor: pointer;
+    border: 2px solid #12161f;
+  }
+
+  .radius-value-display {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e8542a;
+    min-width: 68px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Map */
+  #map {
+    flex: 1;
+    background: #0d1117;
+    cursor: crosshair;
+  }
+
+  .map-hint-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(18,22,31,0.88);
+    border: 1px solid #2a3148;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    color: #9ba3c0;
+    pointer-events: none;
+    z-index: 1000;
+    white-space: nowrap;
+    transition: opacity 0.4s;
+  }
+
+  .map-hint-overlay.hidden { opacity: 0; }
+
+  /* Status strip */
+  .coord-status {
+    background: #12161f;
+    border-top: 1px solid #2a3148;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: #6b7494;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .coord-status .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #3a4060;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .coord-status .dot.active { background: #5db83a; }
+  .coord-status .coords-text { font-variant-numeric: tabular-nums; color: #9ba3c0; }
+
+  /* Manual input BELOW map */
+  .manual-input-bar {
+    background: #12161f;
+    border-top: 1px solid #2a3148;
+    padding: 9px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .manual-input-bar .m-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #4a5270;
+    white-space: nowrap;
+  }
+
+  .manual-input-bar input[type="text"] {
+    flex: 1;
+    background: #1a1f2e;
+    border: 1px solid #2a3148;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #e8eaf0;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+  }
+
+  .manual-input-bar input[type="text"]:focus { border-color: #e8542a; }
+  .manual-input-bar input::placeholder { color: #3a4060; }
+
+  .btn-parse {
+    background: #e8542a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .btn-parse:hover { background: #d4481e; }
+
+  /* ── SIDEBAR ── */
   .sidebar {
     width: 340px;
     flex-shrink: 0;
     background: #12161f;
-    border-right: 1px solid #2a3148;
+    border-left: 1px solid #2a3148;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
   }
 
   .section {
-    padding: 20px;
+    padding: 18px 20px;
     border-bottom: 1px solid #1e2436;
   }
 
@@ -80,65 +285,19 @@
     margin-bottom: 14px;
   }
 
-  label {
-    font-size: 12px;
-    color: #9ba3c0;
-    display: block;
-    margin-bottom: 5px;
+  .status-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #3a4060;
+    margin-right: 6px;
+    vertical-align: middle;
+    transition: background 0.3s;
   }
 
-  input[type="text"], input[type="number"] {
-    width: 100%;
-    background: #1a1f2e;
-    border: 1px solid #2a3148;
-    border-radius: 6px;
-    padding: 9px 12px;
-    font-size: 13px;
-    color: #e8eaf0;
-    outline: none;
-    transition: border-color 0.15s;
-    font-family: inherit;
-  }
+  .status-dot.active { background: #5db83a; }
 
-  input[type="text"]:focus, input[type="number"]:focus {
-    border-color: #e8542a;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 8px;
-  }
-
-  .input-row > div { flex: 1; }
-
-  .hint {
-    font-size: 11px;
-    color: #4a5270;
-    margin-top: 6px;
-    line-height: 1.5;
-  }
-
-  .btn-parse {
-    width: 100%;
-    margin-top: 12px;
-    background: #e8542a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-    font-family: inherit;
-  }
-
-  .btn-parse:hover { background: #d4481e; }
-
-  .map-layer-row {
-    display: flex;
-    gap: 6px;
-  }
+  .map-layer-row { display: flex; gap: 6px; }
 
   .layer-btn {
     flex: 1;
@@ -160,47 +319,90 @@
     color: #7fc0f5;
   }
 
-  .result-card {
-    background: #1a1f2e;
-    border: 1px solid #2a3148;
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin-bottom: 8px;
-  }
+  /* Filter rows */
+  .filter-rows { display: flex; flex-direction: column; gap: 6px; }
 
-  .result-label {
-    font-size: 11px;
-    color: #6b7494;
+  .filter-group-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #4a5270;
     margin-bottom: 4px;
-    font-weight: 500;
+    margin-top: 10px;
+    padding-left: 2px;
   }
 
-  .result-row {
+  .filter-group-label:first-child { margin-top: 0; }
+
+  .filter-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    background: #1a1f2e;
+    border: 1px solid #2a3148;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 38px;
+    transition: border-color 0.2s;
   }
 
-  .result-value {
-    font-size: 15px;
+  .filter-row.has-value { border-color: #2e3d52; }
+
+  .filter-row .field-name {
+    width: 82px;
+    flex-shrink: 0;
+    padding: 0 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #9ba3c0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-right: 1px solid #2a3148;
+    background: #151921;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .filter-row .operator {
+    width: 100px;
+    flex-shrink: 0;
+    padding: 0 8px;
+    font-size: 11px;
+    color: #6b7494;
+    border-right: 1px solid #2a3148;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background: #13181f;
+    font-style: italic;
+  }
+
+  .filter-row .coord-value {
+    flex: 1;
+    padding: 0 10px;
+    font-size: 12px;
     font-weight: 600;
     color: #e8eaf0;
     font-variant-numeric: tabular-nums;
-    flex: 1;
-    letter-spacing: 0.02em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
   }
 
-  .result-value.empty {
+  .filter-row .coord-value.empty {
     color: #3a4060;
-    font-size: 13px;
     font-weight: 400;
+    font-size: 11px;
   }
 
-  .btn-copy {
+  .filter-row .btn-copy {
+    flex-shrink: 0;
     background: #1e2a3a;
-    border: 1px solid #2a3148;
-    border-radius: 5px;
-    padding: 5px 10px;
+    border: none;
+    border-left: 1px solid #2a3148;
+    padding: 0 11px;
     font-size: 11px;
     color: #7fc0f5;
     cursor: pointer;
@@ -208,75 +410,11 @@
     white-space: nowrap;
     font-family: inherit;
     font-weight: 500;
+    height: 100%;
   }
 
-  .btn-copy:hover {
-    background: #253347;
-    border-color: #378add;
-  }
-
-  .btn-copy.copied {
-    background: #1a3024;
-    border-color: #3b6d11;
-    color: #97c459;
-  }
-
-  .coords-pair {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .coords-pair .result-card {
-    flex: 1;
-    margin-bottom: 0;
-  }
-
-  .radius-display {
-    font-size: 22px;
-    font-weight: 700;
-    color: #e8542a;
-    line-height: 1;
-  }
-
-  .radius-sub {
-    font-size: 11px;
-    color: #6b7494;
-    margin-top: 2px;
-  }
-
-  #map {
-    flex: 1;
-    background: #0d1117;
-    border: 2px solid #e8542a;
-  }
-
-  .crosshair-info {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(18,22,31,0.92);
-    border: 1px solid #2a3148;
-    border-radius: 6px;
-    padding: 7px 14px;
-    font-size: 12px;
-    color: #9ba3c0;
-    pointer-events: none;
-    z-index: 1000;
-    white-space: nowrap;
-  }
-
-  .status-dot {
-    display: inline-block;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #6b7494;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-
-  .status-dot.active { background: #3b6d11; }
+  .filter-row .btn-copy:hover { background: #253347; color: #a8d8f8; }
+  .filter-row .btn-copy.copied { background: #1a3024; color: #97c459; }
 
   .copy-all-btn {
     width: 100%;
@@ -289,19 +427,15 @@
     cursor: pointer;
     transition: all 0.15s;
     font-family: inherit;
-    margin-top: 4px;
+    margin-top: 10px;
   }
 
-  .copy-all-btn:hover {
-    background: #1e2d40;
-    color: #7fc0f5;
-    border-color: #378add;
-  }
+  .copy-all-btn:hover { background: #1e2d40; color: #7fc0f5; border-color: #378add; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 780px) {
     .layout { flex-direction: column; height: auto; }
-    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #2a3148; }
-    #map { height: 350px; }
+    .sidebar { width: 100%; border-left: none; border-top: 1px solid #2a3148; }
+    #map { height: 340px; }
   }
 </style>
 </head>
@@ -313,32 +447,58 @@
 </header>
 
 <div class="layout">
-  <div class="sidebar">
 
-    <div class="section">
-      <div class="section-title">Eingabe</div>
+  <!-- MAP COLUMN -->
+  <div class="map-column">
 
-      <label>Koordinaten aus Google Maps</label>
-      <input type="text" id="gmaps-input" placeholder="z.B. 49.01244, 12.03273" />
-      <div class="hint">Format: Lat, Long — direkt aus Google Maps kopieren</div>
-      <button class="btn-parse" onclick="parseGMaps()">Auf Karte setzen</button>
-    </div>
+    <!-- Radius bar ABOVE map -->
+    <div class="radius-bar">
+      <div class="r-label">Radius</div>
 
-    <div class="section">
-      <div class="section-title">Radius</div>
-      <div class="input-row">
-        <div>
-          <label>Meter</label>
-          <input type="number" id="radius-input" value="10000" min="100" max="500000" step="100" oninput="recalculate()"/>
-        </div>
-        <div style="display:flex;align-items:flex-end;padding-bottom:1px;">
-          <div>
-            <div class="radius-display" id="radius-km">10,0</div>
-            <div class="radius-sub">km</div>
-          </div>
-        </div>
+      <div class="radius-presets">
+        <button class="preset-btn" onclick="setRadius(10)">10 m</button>
+        <button class="preset-btn" onclick="setRadius(50)">50 m</button>
+        <button class="preset-btn" onclick="setRadius(100)">100 m</button>
+        <button class="preset-btn" onclick="setRadius(250)">250 m</button>
+        <button class="preset-btn" onclick="setRadius(500)">500 m</button>
+        <button class="preset-btn" onclick="setRadius(1000)">1 km</button>
+        <button class="preset-btn" onclick="setRadius(2500)">2,5 km</button>
+        <button class="preset-btn" onclick="setRadius(5000)">5 km</button>
+        <button class="preset-btn active" onclick="setRadius(10000)">10 km</button>
       </div>
+
+      <div class="slider-wrap">
+        <span class="sl-end">10 m</span>
+        <input type="range" id="radius-slider" min="0" max="100" value="100" oninput="onSliderChange(this.value)"/>
+        <span class="sl-end">10 km</span>
+      </div>
+
+      <div class="radius-value-display" id="radius-display">10,0 km</div>
     </div>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Hint overlay (centered on map) -->
+    <div class="map-hint-overlay" id="map-hint">Auf Karte klicken — Punkt setzen</div>
+
+    <!-- Coord status strip -->
+    <div class="coord-status">
+      <div class="dot" id="status-dot-map"></div>
+      <span class="coords-text" id="coords-display">Noch kein Punkt gesetzt</span>
+    </div>
+
+    <!-- Manual input BELOW map -->
+    <div class="manual-input-bar">
+      <div class="m-label">Manuell</div>
+      <input type="text" id="gmaps-input" placeholder="Lat, Long  —  z.B. 49.01244, 12.03273 (aus Google Maps)" />
+      <button class="btn-parse" onclick="parseGMaps()">Setzen</button>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
 
     <div class="section">
       <div class="section-title">Kartenebene</div>
@@ -350,40 +510,40 @@
 
     <div class="section" style="flex:1;">
       <div class="section-title">
-        <span class="status-dot" id="status-dot"></span>Ergebnisse
+        <span class="status-dot" id="status-dot"></span>Filter-Werte (zum Eintragen)
       </div>
 
-      <div class="coords-pair">
-        <div class="result-card">
-          <div class="result-label">lat_min (≥)</div>
-          <div class="result-row">
-            <div class="result-value empty" id="val-lat-min">—</div>
-            <button class="btn-copy" onclick="copyVal('val-lat-min', this)">Kopieren</button>
-          </div>
-        </div>
-        <div class="result-card">
-          <div class="result-label">lat_max (≤)</div>
-          <div class="result-row">
-            <div class="result-value empty" id="val-lat-max">—</div>
-            <button class="btn-copy" onclick="copyVal('val-lat-max', this)">Kopieren</button>
-          </div>
-        </div>
-      </div>
+      <div class="filter-rows">
+        <div class="filter-group-label">Latitude</div>
 
-      <div class="coords-pair">
-        <div class="result-card">
-          <div class="result-label">long_min (≥)</div>
-          <div class="result-row">
-            <div class="result-value empty" id="val-long-min">—</div>
-            <button class="btn-copy" onclick="copyVal('val-long-min', this)">Kopieren</button>
-          </div>
+        <div class="filter-row" id="row-lat-min">
+          <div class="field-name">Latitude</div>
+          <div class="operator">größer gleich</div>
+          <div class="coord-value empty" id="val-lat-min">—</div>
+          <button class="btn-copy" onclick="copyVal('val-lat-min', this)">Kopieren</button>
         </div>
-        <div class="result-card">
-          <div class="result-label">long_max (≤)</div>
-          <div class="result-row">
-            <div class="result-value empty" id="val-long-max">—</div>
-            <button class="btn-copy" onclick="copyVal('val-long-max', this)">Kopieren</button>
-          </div>
+
+        <div class="filter-row" id="row-lat-max">
+          <div class="field-name">Latitude</div>
+          <div class="operator">kleiner gleich</div>
+          <div class="coord-value empty" id="val-lat-max">—</div>
+          <button class="btn-copy" onclick="copyVal('val-lat-max', this)">Kopieren</button>
+        </div>
+
+        <div class="filter-group-label">Longitude</div>
+
+        <div class="filter-row" id="row-long-min">
+          <div class="field-name">Longitude</div>
+          <div class="operator">größer gleich</div>
+          <div class="coord-value empty" id="val-long-min">—</div>
+          <button class="btn-copy" onclick="copyVal('val-long-min', this)">Kopieren</button>
+        </div>
+
+        <div class="filter-row" id="row-long-max">
+          <div class="field-name">Longitude</div>
+          <div class="operator">kleiner gleich</div>
+          <div class="coord-value empty" id="val-long-max">—</div>
+          <button class="btn-copy" onclick="copyVal('val-long-max', this)">Kopieren</button>
         </div>
       </div>
 
@@ -391,145 +551,154 @@
     </div>
 
   </div>
-
-  <div style="position:relative;flex:1;display:flex;flex-direction:column;">
-    <div id="map"></div>
-    <div class="crosshair-info" id="click-hint">Auf Karte klicken um Koordinaten zu wählen</div>
-  </div>
 </div>
 
 <script>
 const DEG2RAD = Math.PI / 180;
+let marker = null, boundingBox = null;
+let currentLat = null, currentLng = null;
+let currentRadius = 10000;
 
-let marker = null;
-let boundingBox = null;
-let currentLat = null;
-let currentLng = null;
-
+// ── Map ──
 const map = L.map('map', { zoomControl: true }).setView([49.1970791, 11.3597205], 10);
 
 const layers = {
   osm: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/">CARTO</a>',
-    maxZoom: 19
+    attribution: '© OpenStreetMap contributors © CARTO', maxZoom: 19
   }),
   rail: L.tileLayer('https://tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, © <a href="https://www.openrailwaymap.org/">OpenRailwayMap</a>',
-    maxZoom: 19,
-    opacity: 0.8
+    attribution: '© OpenStreetMap contributors, © OpenRailwayMap', maxZoom: 19, opacity: 0.8
   })
 };
-
 layers.osm.addTo(map);
 layers.rail.addTo(map);
-let currentLayer = 'rail';
+
+map.on('click', e => setLocation(e.latlng.lat, e.latlng.lng));
 
 function switchLayer(name) {
   document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('btn-' + name).classList.add('active');
-
   if (name === 'osm') {
-    if (map.hasLayer(layers.rail)) { map.removeLayer(layers.rail); }
-    if (!map.hasLayer(layers.osm)) { layers.osm.addTo(map); }
-    currentLayer = 'osm';
+    if (map.hasLayer(layers.rail)) map.removeLayer(layers.rail);
+    if (!map.hasLayer(layers.osm)) layers.osm.addTo(map);
   } else {
-    if (!map.hasLayer(layers.osm)) { layers.osm.addTo(map); }
-    if (!map.hasLayer(layers.rail)) { layers.rail.addTo(map); }
-    currentLayer = 'rail';
+    if (!map.hasLayer(layers.osm)) layers.osm.addTo(map);
+    if (!map.hasLayer(layers.rail)) layers.rail.addTo(map);
   }
 }
 
-map.on('click', function(e) {
-  setLocation(e.latlng.lat, e.latlng.lng);
-});
+// ── Radius: logarithmic slider 10 m – 10 000 m ──
+const R_MIN = Math.log10(10), R_MAX = Math.log10(10000);
 
+function sliderToRadius(v) {
+  return Math.round(Math.pow(10, R_MIN + (v / 100) * (R_MAX - R_MIN)));
+}
+function radiusToSlider(r) {
+  return Math.round(((Math.log10(Math.max(10, Math.min(r, 10000))) - R_MIN) / (R_MAX - R_MIN)) * 100);
+}
+function formatRadius(r) {
+  return r < 1000
+    ? r.toLocaleString('de-DE') + ' m'
+    : (r / 1000).toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' km';
+}
+
+function onSliderChange(val) {
+  currentRadius = sliderToRadius(parseFloat(val));
+  document.getElementById('radius-display').textContent = formatRadius(currentRadius);
+  syncPresetHighlight(currentRadius);
+  recalculate();
+}
+
+function setRadius(r) {
+  currentRadius = r;
+  document.getElementById('radius-slider').value = radiusToSlider(r);
+  document.getElementById('radius-display').textContent = formatRadius(r);
+  syncPresetHighlight(r);
+  recalculate();
+}
+
+const PRESETS = [10, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
+function syncPresetHighlight(r) {
+  document.querySelectorAll('.preset-btn').forEach((b, i) => {
+    b.classList.toggle('active', PRESETS[i] === r);
+  });
+}
+
+// ── Location ──
 function setLocation(lat, lng) {
-  currentLat = lat;
-  currentLng = lng;
+  currentLat = lat; currentLng = lng;
 
   if (marker) map.removeLayer(marker);
   marker = L.circleMarker([lat, lng], {
-    radius: 7,
-    color: '#e8542a',
-    fillColor: '#e8542a',
-    fillOpacity: 1,
-    weight: 2
+    radius: 7, color: '#e8542a', fillColor: '#e8542a', fillOpacity: 1, weight: 2
   }).addTo(map);
 
-  document.getElementById('click-hint').textContent =
-    lat.toFixed(6) + ', ' + lng.toFixed(6);
+  document.getElementById('map-hint').classList.add('hidden');
+  document.getElementById('coords-display').textContent = lat.toFixed(6) + ', ' + lng.toFixed(6);
+  document.getElementById('status-dot-map').classList.add('active');
   document.getElementById('status-dot').classList.add('active');
-
   recalculate();
 }
 
 function recalculate() {
   if (currentLat === null) return;
 
-  const radius = parseFloat(document.getElementById('radius-input').value) || 10000;
-  document.getElementById('radius-km').textContent = (radius / 1000).toLocaleString('de-DE', {maximumFractionDigits: 1});
+  const dLat = currentRadius / 111320;
+  const dLng = currentRadius / (111320 * Math.cos(currentLat * DEG2RAD));
 
-  const deltaLat = radius / 111320;
-  const deltaLng = radius / (111320 * Math.cos(currentLat * DEG2RAD));
+  const latMin = currentLat - dLat, latMax = currentLat + dLat;
+  const lngMin = currentLng - dLng, lngMax = currentLng + dLng;
 
-  const latMin = currentLat - deltaLat;
-  const latMax = currentLat + deltaLat;
-  const lngMin = currentLng - deltaLng;
-  const lngMax = currentLng + deltaLng;
-
-  setResult('val-lat-min', latMin);
-  setResult('val-lat-max', latMax);
-  setResult('val-long-min', lngMin);
-  setResult('val-long-max', lngMax);
+  setResult('val-lat-min',  'row-lat-min',  latMin);
+  setResult('val-lat-max',  'row-lat-max',  latMax);
+  setResult('val-long-min', 'row-long-min', lngMin);
+  setResult('val-long-max', 'row-long-max', lngMax);
 
   if (boundingBox) map.removeLayer(boundingBox);
-  boundingBox = L.rectangle(
-    [[latMin, lngMin], [latMax, lngMax]],
-    { color: '#e8542a', weight: 2, fillColor: '#e8542a', fillOpacity: 0.08 }
-  ).addTo(map);
+  boundingBox = L.rectangle([[latMin, lngMin],[latMax, lngMax]], {
+    color: '#e8542a', weight: 2, fillColor: '#e8542a', fillOpacity: 0.08
+  }).addTo(map);
 
-  map.fitBounds([[latMin, lngMin], [latMax, lngMax]], { padding: [40, 40] });
+  map.fitBounds([[latMin, lngMin],[latMax, lngMax]], { padding: [40, 40] });
 }
 
-function setResult(id, val) {
-  const el = document.getElementById(id);
+function setResult(valId, rowId, val) {
+  const el = document.getElementById(valId);
   el.textContent = val.toFixed(7);
   el.classList.remove('empty');
+  document.getElementById(rowId).classList.add('has-value');
 }
 
+// ── Manual input ──
 function parseGMaps() {
   const raw = document.getElementById('gmaps-input').value.trim();
   const match = raw.match(/(-?\d+[\.,]\d+)[,;\s]+(-?\d+[\.,]\d+)/);
-  if (!match) {
-    alert('Format nicht erkannt. Bitte "Lat, Long" eingeben, z.B. 49.01244, 12.03273');
-    return;
-  }
+  if (!match) { alert('Format nicht erkannt. Bitte "Lat, Long" eingeben, z.B. 49.01244, 12.03273'); return; }
   const lat = parseFloat(match[1].replace(',', '.'));
   const lng = parseFloat(match[2].replace(',', '.'));
-  map.setView([lat, lng], 12);
+  map.setView([lat, lng], 14);
   setLocation(lat, lng);
 }
 
+document.getElementById('gmaps-input').addEventListener('keydown', e => { if (e.key === 'Enter') parseGMaps(); });
+
+// ── Copy ──
 function copyVal(id, btn) {
   const val = document.getElementById(id).textContent;
   if (val === '—') return;
   navigator.clipboard.writeText(val).then(() => {
-    btn.textContent = 'Kopiert!';
+    btn.textContent = '✓ Kopiert';
     btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = 'Kopieren';
-      btn.classList.remove('copied');
-    }, 1500);
+    setTimeout(() => { btn.textContent = 'Kopieren'; btn.classList.remove('copied'); }, 1500);
   });
 }
 
 function copyAll() {
-  const ids = ['val-lat-min', 'val-lat-max', 'val-long-min', 'val-long-max'];
-  const vals = ids.map(id => document.getElementById(id).textContent);
+  const vals = ['val-lat-min','val-lat-max','val-long-min','val-long-max'].map(id => document.getElementById(id).textContent);
   if (vals[0] === '—') return;
   navigator.clipboard.writeText(vals.join(', ')).then(() => {
     const btn = event.target;
-    btn.textContent = 'Alle Werte kopiert!';
+    btn.textContent = '✓ Alle Werte kopiert!';
     setTimeout(() => { btn.textContent = 'Alle 4 Werte kopieren (kommagetrennt)'; }, 2000);
   });
 }
